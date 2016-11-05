@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="libs/jsoup-1.9.2.jar"/>
+	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.39-bin.jar"/>
+	<classpathentry kind="lib" path="libs/jsoup-1.9.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/jsoup-1.9.2-sources.jar"/>
+	<classpathentry kind="lib" path="libs/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="libs/solr-solrj-5.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/commons-cli-1.2.jar"/>
+	<classpathentry kind="lib" path="libs/junit.jar"/>
+	<classpathentry kind="lib" path="libs/maxent-2.5.2.jar"/>
+	<classpathentry kind="lib" path="libs/opennlp-tools-1.4.3.jar"/>
+	<classpathentry kind="lib" path="libs/trove.jar"/>
+	<classpathentry kind="lib" path="libs/vn.hus.nlp.fsm-1.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/vn.hus.nlp.sd-2.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/vn.hus.nlp.utils-1.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.core.runtime-3.7.0.jar"/>
+	<classpathentry kind="lib" path="libs/org.osgi.core-5.0.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
