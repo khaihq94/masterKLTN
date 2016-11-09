@@ -1,0 +1,2 @@
+﻿createdProcess dùng để lấy kết quả
+createdProcess đc lấy từ copyleaks.sdk.api.CopyleaksCloud.CreateByText
