@@ -32,7 +32,30 @@ public class Main {
 			return;
 		}*/
 		
-		ArrayList<String> contents = crawlTuoiTre.getContentTuoitreOnline();
-		tokenizedContent = tokenize.tokenize(contents);
+		/*//Lấy các link con từ link chủ đề
+		ArrayList<String> links = crawlTuoiTre.getLinkItemsTuoiTre();
+		ArrayList<String> sentences = new ArrayList<>();
+		ArrayList<String> words = new ArrayList<>();
+		String content;
+		//Duyệt qua từng link con
+		for(String link : links){
+			//Lấy nội dung của link con
+			content = crawlTuoiTre.getContentTuoitreOnline(link);
+			//Lưu nội dung vào DB
+			
+			//Tokenize cho nội dung
+			content = tokenize.tokenize(content);
+			//Dùng đoạn văn đã tokenize tách thành từng câu
+			sentences = checkPlagiarism.seperateSentences(content);
+			//Dùng đạon văn đã tokenize tách thành từng từ và loại bỏ stopword
+			words = checkPlagiarism.seperateWords(content);
+		}
+		//Xóa hết link con trong mảng
+		links.clear();
+		//Xóa hết câu trong mảng
+		sentences.clear();
+		//Xóa hết từ trong mảng
+		words.clear();*/
+		
 	}
 }

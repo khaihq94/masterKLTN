@@ -227,79 +227,74 @@ public class CrawlTuoiTre {
 		return link;
 	}
 
-	public ArrayList<String> getContentTuoitreOnline() {
+	public String getContentTuoitreOnline(String link) {
+		// Tạo biến lưu giữ nội dung bài báo
+		// String content = link + "\r\n";
+		String content = "";
+		try {
+			// System.out.println(link);
+			// Lay het noi dung HTML cua trang co URL = currentURL
+			Document doc = Jsoup.connect(link).data("query", "Java").userAgent("Mozilla").cookie("auth", "token")
+					.timeout(50000).get();
 
-		ArrayList<String> contents = new ArrayList<String>();
-		ArrayList<String> links = getLinkItemsTuoiTre();
-		for (String link : links) {
-			// Tạo biến lưu giữ nội dung bài báo
-			// String content = link + "\r\n";
-			String content = "";
-			try {
-				// System.out.println(link);
-				// Lay het noi dung HTML cua trang co URL = currentURL
-				Document doc = Jsoup.connect(link).data("query", "Java").userAgent("Mozilla").cookie("auth", "token")
-						.timeout(50000).get();
+			// Lay cac element la div trong doc
+			Elements elements = doc.getElementsByTag("div");
+			for (Element div : elements) {
+				/*
+				 * 
+				 * Lấy tiêu đề của bài báo
+				 * 
+				 */
+				if (div.attr("class").trim().equals("block-feature block-feature-1")
+						&& div.tagName().trim().equals("div")) {
+					Elements div_children = div.children();
+					for (Element e : div_children) {
+						if (e.attr("class").trim().equals("title-2") && e.tagName().trim().equals("h1")) {
+							Element a = e.child(0);
+							// System.out.println(a.ownText()+ "\n");
+							// Thêm đoạn text vào biến content, đồng thời
+							// thay
+							// toàn bộ các ký tự "&nbsp;" thành " "
+							content = content + a.text().replace("\u00a0", " ") + " \r\n";
 
-				// Lay cac element la div trong doc
-				Elements elements = doc.getElementsByTag("div");
-				for (Element div : elements) {
-					/*
-					 * 
-					 * Lấy tiêu đề của bài báo
-					 * 
-					 */
-					if (div.attr("class").trim().equals("block-feature block-feature-1")
-							&& div.tagName().trim().equals("div")) {
-						Elements div_children = div.children();
-						for (Element e : div_children) {
-							if (e.attr("class").trim().equals("title-2") && e.tagName().trim().equals("h1")) {
-								Element a = e.child(0);
-								// System.out.println(a.ownText()+ "\n");
-								// Thêm đoạn text vào biến content, đồng thời
-								// thay
-								// toàn bộ các ký tự "&nbsp;" thành " "
-								content = content + a.text().replace("\u00a0", " ") + " \r\n";
-
-							}
-							/*
-							 * if(e.attr("class").trim().equals("tool-bar") &&
-							 * div.tagName().trim().equals("div")){ Element a =
-							 * e.child(0); // System.out.println(a.ownText()+
-							 * "\n"); content = content +
-							 * a.text().replace("\u00a0", " ") + " \r\n"; }
-							 */
-							if (e.attr("class").trim().equals("txt-head") && e.tagName().trim().equals("p")) {
-								// System.out.println(e.ownText());
-								// Thêm đoạn text vào biến content, đồng thời
-								// thay
-								// toàn bộ các ký tự "&nbsp;" thành " "
-								content = content + e.text().replace("\u00a0", " ") + " \r\n";
-							}
 						}
-					}
-
-					/*
-					 * 
-					 * Lấy nội dung bài báo
-					 * 
-					 */
-					if (div.attr("class").trim().equals("fck") && div.tagName().trim().equals("div")) {
-						Elements div_children = div.children();
-						for (Element p : div_children) {
-							// System.out.println(p.ownText());
-							// Thêm đoạn text vào biến content, đồng thời thay
-							// toàn
-							// bộ các ký tự "&nbsp;" thành " "
-							content = content + p.text().replace("\u00a0", " ") + " \r\n";
+						/*
+						 * if(e.attr("class").trim().equals("tool-bar") &&
+						 * div.tagName().trim().equals("div")){ Element a =
+						 * e.child(0); // System.out.println(a.ownText()+ "\n");
+						 * content = content + a.text().replace("\u00a0", " ") +
+						 * " \r\n"; }
+						 */
+						if (e.attr("class").trim().equals("txt-head") && e.tagName().trim().equals("p")) {
+							// System.out.println(e.ownText());
+							// Thêm đoạn text vào biến content, đồng thời
+							// thay
+							// toàn bộ các ký tự "&nbsp;" thành " "
+							content = content + e.text().replace("\u00a0", " ") + " \r\n";
 						}
 					}
 				}
-			} catch (Exception e) {
-				// TODO: handle exception
+
+				/*
+				 * 
+				 * Lấy nội dung bài báo
+				 * 
+				 */
+				if (div.attr("class").trim().equals("fck") && div.tagName().trim().equals("div")) {
+					Elements div_children = div.children();
+					for (Element p : div_children) {
+						// System.out.println(p.ownText());
+						// Thêm đoạn text vào biến content, đồng thời thay
+						// toàn
+						// bộ các ký tự "&nbsp;" thành " "
+						content = content + p.text().replace("\u00a0", " ") + " \r\n";
+					}
+				}
 			}
-			contents.add(content);
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		return contents;
+
+		return content;
 	}
 }

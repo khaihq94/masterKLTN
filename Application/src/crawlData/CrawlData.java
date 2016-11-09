@@ -233,13 +233,6 @@ public class CrawlData {
 		return content;
 	}*/
 
-	public void getContent() {
-		// TODO Auto-generated method stub
-		ArrayList<String> contents = crawlTuoiTre.getContentTuoitreOnline();
-		tokenize.tokenize(contents);
-		
-		System.out.println("Done!!!");
-	}
 	
 	/*
 	 * TODO
