@@ -1,16 +1,8 @@
 package crawlData;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
@@ -19,10 +11,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import tokenize.Tokenize;
+
 
 public class CrawlData {
+	
+	CrawlTuoiTre crawlTuoiTre = new CrawlTuoiTre();
+	Tokenize tokenize = new Tokenize();
 
-	public ArrayList<String> getLinkItemsTuoiTre(String url){
+	/*public ArrayList<String> getLinkItemsTuoiTre(String url){
 		ArrayList<String> link = new ArrayList<String>();
 		try {
 			// Lay het noi dung HTML cua trang co URL = currentURL
@@ -41,10 +38,10 @@ public class CrawlData {
 						
 						for(Element div_leftside_children : div_leftside){
 							
-							/*TODO
+							TODO
 							 * Xu ly lay du lieu cua the co class la "block-feature"
 							 * 
-							 * */
+							 * 
 							if(div_leftside_children.attr("class").trim().equals("block-feature")){
 								Elements div_children = div_leftside_children.children();
 								
@@ -61,10 +58,10 @@ public class CrawlData {
 								}
 							}
 							
-							/* TODO
+							 TODO
 							 * Xu ly lay du lieu cua the co class la "list-news"
 							 * 
-							 * */
+							 * 
 							if(div_leftside_children.attr("class").trim().equals("list-news")){
 								
 								//System.out.println(div_leftside_children.toString());
@@ -85,10 +82,10 @@ public class CrawlData {
 								}
 							}
 							
-							/*
+							
 							 * Xu ly lay du lieu cua the co class la "highlight highlight-2"
 							 * 
-							 * */
+							 * 
 							if(div_leftside_children.attr("class").trim().equals("highlight highlight-2")){
 								Elements div_highlight = div_leftside_children.children();
 								for(Element div_newhot_most_content : div_highlight){
@@ -120,11 +117,11 @@ public class CrawlData {
 						Elements rightside_childrens = e.children();
 						
 						for(Element rightside_children : rightside_childrens){
-							/*
+							
 							 * TODO
 							 * Xử lý thẻ div có class là block-1 
 							 * 
-							 * */
+							 * 
 							if(rightside_children.attr("class").trim().equals("block-1") && rightside_children.tagName().trim().equals("div")){
 								Elements block1_childrens  = rightside_children.children();
 								
@@ -142,11 +139,11 @@ public class CrawlData {
 									}
 								}
 							}
-							/*
+							
 							 * TODO
 							 * Xử lý thẻ div có class là scroll-pane scroll-pane-4 jspScrollable
 							 * 
-							 * */
+							 * 
 							if(rightside_children.attr("class").trim().equals("scroll-pane scroll-pane-4") && rightside_children.tagName().trim().equals("div")){
 								Element ul = rightside_children.child(0);
 								Elements lis = ul.children();
@@ -172,9 +169,9 @@ public class CrawlData {
 			e.printStackTrace();
 		}
 		return link;
-	}
+	}*/
 	
-	public String getContentTuoitreOnline(String link){
+	/*public String getContentTuoitreOnline(String link){
 			
 			//Tạo biến lưu giữ nội dung bài báo
 //			String content = link + "\r\n";
@@ -187,11 +184,11 @@ public class CrawlData {
 				//Lay cac element la div trong doc
 				Elements elements = doc.getElementsByTag("div");
 				for(Element div : elements){
-					/*
+					
 					 * 
 					 * Lấy tiêu đề của bài báo
 					 * 
-					 * */
+					 * 
 					if(div.attr("class").trim().equals("block-feature block-feature-1") && div.tagName().trim().equals("div")){
 						Elements div_children = div.children();
 						for(Element e : div_children){
@@ -202,11 +199,11 @@ public class CrawlData {
 								content = content + a.text().replace("\u00a0", " ") + " \r\n";
 								
 							}
-							/*if(e.attr("class").trim().equals("tool-bar") && div.tagName().trim().equals("div")){
+							if(e.attr("class").trim().equals("tool-bar") && div.tagName().trim().equals("div")){
 								Element a = e.child(0);
 //								System.out.println(a.ownText()+ "\n");
 								content = content + a.text().replace("\u00a0", " ") + " \r\n";
-							}*/
+							}
 							if(e.attr("class").trim().equals("txt-head") && e.tagName().trim().equals("p")){
 //								System.out.println(e.ownText());
 								//Thêm đoạn text vào biến content, đồng thời thay toàn bộ các ký tự "&nbsp;" thành " "
@@ -215,11 +212,11 @@ public class CrawlData {
 						}
 					}
 					
-					/*
+					
 					 * 
 					 * Lấy nội dung bài báo
 					 * 
-					 * */
+					 * 
 					if(div.attr("class").trim().equals("fck") && div.tagName().trim().equals("div")){
 						Elements div_children = div.children();
 						for(Element p : div_children){
@@ -234,27 +231,13 @@ public class CrawlData {
 			}
 			
 		return content;
-	}
+	}*/
 
-	public void getContent(String url) {
+	public void getContent() {
 		// TODO Auto-generated method stub
-		ArrayList<String> links = getLinkItemsTuoiTre(url);
-		for(String link : links){
-			String content = getContentTuoitreOnline(link);
-			String fileName = link.replace(':' , '.');
-			fileName = fileName.replace('/', '.');
-			//Tạo file txt với tên file là đường dẫn bài báo
-			File file = createInputFile(fileName);
-			//Ghi nội dung bài báo vào file đã tạo
-			writeContentIntoInputFile(file, content);
-		}
+		ArrayList<String> contents = crawlTuoiTre.getContentTuoitreOnline();
+		tokenize.tokenize(contents);
 		
-		//Tokenize tất cả các file trong folder input
-		runTonkenizer();
-		//Kiểm tra việc tokenize hoàn thành chưa, nếu hoàn thành thì xóa tất cả file trong folder input
-		if(isTokenizeDone(12000)){
-			//deleteInput();
-		}
 		System.out.println("Done!!!");
 	}
 	
@@ -332,62 +315,5 @@ public class CrawlData {
 		}
 	}
 	
-	/*
-	 * TODO
-	 * Chạy vnTokenizer
-	 * 
-	 * */
-	public void runTonkenizer(){
-		String line = "vnTokenizer.bat -i input -o output";
-		try {
-			Runtime rt = Runtime.getRuntime();
-			String path = System.getProperty("user.dir") + "\\vnTokenizer";
-			//Bật cmd.exe và chạy lệnh line, sau đó exit
-			rt.exec("cmd.exe /c cd \"" + path + "\" & start cmd.exe /k \"" + line + " && exit\"");
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-	}
-	
-	/*TODO
-	 * Hàm kiểm tra xem việc tonkenize hoàn thành chưa
-	 * 
-	 * */
-	public boolean isTokenizeDone(int maximumTimeoutInMilisec){
-		boolean done = false;
-		long startTime = System.currentTimeMillis();
-		long memory = startTime;
-		long endTime = startTime + maximumTimeoutInMilisec;
-		while(startTime < endTime){
-			//Gán lại thời gian mới (thay cho việc tăng thời gian)
-			startTime = System.currentTimeMillis();
-			//Kiểm tra việc hoàn thành tokenize cứ sau 2.5 giây
-			if(startTime - memory == 2500){
-				memory = startTime;
-				try {
-					//Đọc các process đang chạy, kiểm tra xem có cmd hay không
-					Process p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe");
-					BufferedReader input =  new BufferedReader(new InputStreamReader(p.getInputStream()));
-					String line;
-					String pidInfo ="";
-					while ((line = input.readLine()) != null) {
-					    pidInfo+=line; 
-					}
-					input.close();
-					if(!pidInfo.contains("Kcmd.exe"))
-					{
-						//Khi không có cmd chạy, trả về true và thoát vòng lặp
-					    done = true;
-					    break;
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		return done;
-	}
+
 }

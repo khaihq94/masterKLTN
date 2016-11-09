@@ -5,66 +5,34 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import crawlData.CrawlData;
+import crawlData.*;
 import plagiarism.CheckPlagiarism;
+import tokenize.Tokenize;
 
 public class Main {
 	
-	static String urlMySQL = "jdbc:mysql://localhost/testcrawldata?useUnicode=true&characterEncoding=utf8";
+	/*static String urlMySQL = "jdbc:mysql://localhost/testcrawldata?useUnicode=true&characterEncoding=utf8";
 	static String user = "root";
-	static String password = "";
+	static String password = "";*/
 	
-	static String[] columns = new String[]{"title", "link"};
+//	static String[] columns = new String[]{"title", "link"};
 	static String currentURL = "http://tuoitre.vn/tin/chinh-tri-xa-hoi";
 
 	public static void main(String[] args) {
 //		MySQLAccess mySQLAccess = new MySQLAccess();
-		CrawlData crawlData = new CrawlData();
+		CrawlTuoiTre crawlTuoiTre = new CrawlTuoiTre();
 		CheckPlagiarism checkPlagiarism = new CheckPlagiarism();
+		Tokenize tokenize = new Tokenize();
+		String[] tokenizedContent;
 		
 		/*if(!mySQLAccess.connect(urlMySQL, user, password)){
 			System.out.println("---Fail---");
 			return;
 		}*/
-//		mySQLAccess.close();
-//		crawlData.getLinkItemsTuoiTre(currentURL);
-//		crawlData.getLinkItemsTuoiTre("http://tuoitre.vn/tin/song-khoe");
 		
-		crawlData.getContent(currentURL);
-//		File file = crawlData.createInputFile("test");
-//		crawlData.writeContentIntoInputFile(file);
-//		crawlData.deleteInputFile(file);
-//		crawlData.runTonkenizer();
-//		crawlData.isTokenizeDone(10000);
-//		crawlData.deleteInput();
-//		checkPlagiarism.checkPlag1();
-//		checkPlagiarism.readStopWordsFile("vietnamese-stopwords.txt");
-		/*String line = null;
-        String content = "";
-        try {
-            // FileReader đọc file theo Encode mặc định
-            FileReader fileReader = 
-                new FileReader("D:\\DeCuongMoi\\KLTN\\TestDataCrawling\\Application\\vnTokenizer\\output\\http...tuoitre.vn.tin.chinh-tri-xa-hoi.20161031.boi-ghe-ra-tam-ho-phu-ninh-hai-hoc-sinh-lop-8-chet-duoi.1210975.html.txt");
-
-            // Tạo bufferedReader để duyệt qua từng dòng trong file
-            BufferedReader bufferedReader = 
-                new BufferedReader(fileReader);
-
-            while((line = bufferedReader.readLine()) != null) {
-//                System.out.println(line);
-            	content = content + line;
-            }   
-
-            // Đóng buffered
-            bufferedReader.close();         
-        }
-        catch(FileNotFoundException ex) {
-            
-        }
-        catch(IOException ex) {
-            
-        }
-		checkPlagiarism.separateWords(content);*/
+		ArrayList<String> contents = crawlTuoiTre.getContentTuoitreOnline();
+		tokenizedContent = tokenize.tokenize(contents);
 	}
 }

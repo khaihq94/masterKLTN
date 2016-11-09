@@ -37,13 +37,17 @@ public class CheckPlagiarism {
 		nonWordList.add("`");
 		nonWordList.add("~");
 		nonWordList.add("\"");
+		nonWordList.add("[");
+		nonWordList.add("]");
+		nonWordList.add("{");
+		nonWordList.add("}");
 		return nonWordList;
 	}
 
-	public ArrayList<String> separateWords(String content) {
+	public ArrayList<String> separateWords(String[] content) {
 		ArrayList<String> wordList = new ArrayList<>();
 		ArrayList<String> nonWordList = nonWordList();
-
+		String 
 		for (String word : content.split("\\s+")) {
 			// System.out.println(word);
 			wordList.add(word);

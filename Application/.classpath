@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="libs/vn.hus.nlp.utils-1.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.core.runtime-3.7.0.jar"/>
 	<classpathentry kind="lib" path="libs/org.osgi.core-5.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/vn.hus.nlp.tokenizer-4.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
