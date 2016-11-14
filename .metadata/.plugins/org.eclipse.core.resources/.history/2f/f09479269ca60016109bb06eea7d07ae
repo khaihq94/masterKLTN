@@ -1,0 +1,47 @@
+package main;
+
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import crawlData.*;
+import plagiarism.CheckPlagiarism;
+import tokenize.Tokenize;
+
+public class Main {
+	
+	/*static String urlMySQL = "jdbc:mysql://localhost/testcrawldata?useUnicode=true&characterEncoding=utf8";
+	static String user = "root";
+	static String password = "";*/
+	
+//	static String[] columns = new String[]{"title", "link"};
+	static String currentURL = "http://tuoitre.vn/tin/chinh-tri-xa-hoi";
+
+	public static void main(String[] args) {
+//		MySQLAccess mySQLAccess = new MySQLAccess();
+		CrawlTuoiTre crawlTuoiTre = new CrawlTuoiTre();
+		CheckPlagiarism checkPlagiarism = new CheckPlagiarism();
+		Tokenize tokenize = new Tokenize();
+		String[] tokenizedContent;
+		
+		/*if(!mySQLAccess.connect(urlMySQL, user, password)){
+			System.out.println("---Fail---");
+			return;
+		}*/
+		
+		/*ArrayList<String> links = crawlTuoiTre.getLinkItemsTuoiTre();
+		String content;
+		for(String link : links){
+			content = crawlTuoiTre.getContentTuoitreOnline(link);
+			tokenize.tokenize(content);
+		}*/
+		
+		ArrayList<String> sentences = checkPlagiarism.seperateSentences("gần ... 250.000 lượt. nhắn ? tin ! tweet");
+		for(String sentence : sentences){
+			System.out.println(sentence);
+		}
+	}
+}
