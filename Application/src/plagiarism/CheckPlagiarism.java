@@ -173,7 +173,7 @@ public class CheckPlagiarism {
 			//Kiểm tra dấu chấm
 			else if (text.charAt(k) == '.') {
 				//Kiểm tra xem 2 ký tự kế tiếp có nằm trong chiều dài chuỗi ko
-				if(k + 1 <= text.length() && k + 2 <= text.length()){
+				if(k + 1 < text.length() && k + 2 < text.length()){
 					//Kiểm tra xem phải là dấu ... hay không
 					if (text.charAt(k + 1) == '.' && text.charAt(k + 2) == '.') {
 						// Thêm câu có vị trí ký tự từ position đến k(bỏ dấu)
@@ -186,7 +186,7 @@ public class CheckPlagiarism {
 					}
 				}
 				//Kiểm tra xem dấu . có phải là ngăn cách giữa các số, VD: 25.000
-				if(k + 1 <= text.length()){
+				if(k + 1 < text.length()){
 					String beforeCharAtK = text.charAt(k - 1) + "";
 					String afterCharAtK = text.charAt(k + 1) + "";
 					//Nếu ký tự trước k và sau K là con số thì continue
@@ -265,6 +265,88 @@ public class CheckPlagiarism {
 			}
 		}
 		return words;
+	}
+	
+	/*
+	 * 
+	 * Tính IDF của từ: IDF của 1 từ đc tính bằng hệ số giữa tổng số câu trong văn bản chia cho tổng số câu chứa từ đó
+	 * input: word - từ cần tính IDF;	sentences - mảng chứa các câu của văn bản đang xét;		words - mảng chứa các từ của văn bản
+	 * output: giá trị IDF của từ đuuợc đưa vào
+	 * 
+	 * */
+	public double getIDF(String word, ArrayList<String> sentences){
+		//Tổng số câu trong văn bản
+		int numberOfSentences = sentences.size();
+		double count = 0;
+		//Tính tổng số lần xuất hiện của từ trong văn bản theo từng câu
+		for(String sentence : sentences){
+			for(String tmpWord : seperateWords(sentence)){
+				if(tmpWord.equalsIgnoreCase(word)){
+					break;
+				}
+			}
+			count++;
+		}
+		/*for(String tmpWord : words){
+			if(word.equalsIgnoreCase(tmpWord)){
+				count++;
+			}
+		}*/
+		double IDF = numberOfSentences/count;
+		return IDF;
+	}
+	
+	/*
+	 * Tính độ tương tự lớn nhất của từ so với 1 văn bản
+	 * input: word - từ cần tìm độ tương tự
+	 * output: độ tương tự lớn nhất của từ so với văn bản
+	 * */
+	public double getMaxSim(String word, ArrayList<String> words){
+		double maxSim = 0;
+		word = word.trim();
+		for(String tmpWord : words){
+			if(word.equals(tmpWord)){
+				maxSim = 1;
+			}else if(word.equalsIgnoreCase(tmpWord)){
+				maxSim = 0.98;
+			}
+		}
+		return maxSim;
+	}
+	
+	public double getSim(String content1, String content2){
+		
+		
+		ArrayList<String> words1 = seperateWords(content1);
+		ArrayList<String> words2 = seperateWords(content2);
+		ArrayList<String> sentences1 = seperateSentences(content1);
+		ArrayList<String> sentences2 = seperateSentences(content2);
+		
+		double totalMaxSim1 = 0;
+		double totalIDF1 = 0;
+		for(String word : words1){
+			double wordIDF = getIDF(word, sentences1);
+			totalIDF1 += wordIDF;
+			totalMaxSim1 += getMaxSim(word, words2);
+		}
+		double sim1 = 0;
+		if(totalIDF1 != 0){
+			sim1 = totalMaxSim1 / totalIDF1;
+		}
+		
+		double totalMaxSim2 = 0;
+		double totalIDF2 = 0;
+		for(String word : words2){
+			double wordIDF = getIDF(word, sentences2);
+			totalIDF2 += wordIDF;
+			totalMaxSim2 += getMaxSim(word, words1);
+		}
+		double sim2 = 0;
+		if(totalIDF2 != 0){
+			sim2 = totalMaxSim2 / totalIDF2;
+		}
+		
+		return (sim1 + sim2)/2;
 	}
 
 }

@@ -32,7 +32,10 @@ public class Main {
 			return;
 		}*/
 		
-		/*//Lấy các link con từ link chủ đề
+		/*
+		//Lấy các tin tức từ db với mốc ngày hiện tại trừ 3
+		
+		//Lấy các link con từ link chủ đề
 		ArrayList<String> links = crawlTuoiTre.getLinkItemsTuoiTre();
 		ArrayList<String> sentences = new ArrayList<>();
 		ArrayList<String> words = new ArrayList<>();
@@ -41,14 +44,26 @@ public class Main {
 		for(String link : links){
 			//Lấy nội dung của link con
 			content = crawlTuoiTre.getContentTuoitreOnline(link);
-			//Lưu nội dung vào DB
+			//So sánh link của tin vừa lấy với các tin có trong db đã đc lấy ở trên
+			
+			//Nếu trùng remove content khỏi mảng, bỏ qua các bước dưới
+			
+			//Nếu không trùng thì thực hiện các bước kiểm tra về nội dung với các tin trong db đã lấy ở trên
+			
 			
 			//Tokenize cho nội dung
 			content = tokenize.tokenize(content);
 			//Dùng đoạn văn đã tokenize tách thành từng câu
 			sentences = checkPlagiarism.seperateSentences(content);
-			//Dùng đạon văn đã tokenize tách thành từng từ và loại bỏ stopword
+			//Dùng đoạn văn đã tokenize tách thành từng từ và loại bỏ stopword
 			words = checkPlagiarism.seperateWords(content);
+			
+			//Lấy độ tương đồng giữa 2 văn bản
+			
+			//Nếu độ tương đồng giữa 2 văn bản nhỏ hơn 0.7 thì lưu tin mới vào db
+			
+			//Nếu lớn hơn 0.7, xóa tin tức và ko lưu vào db
+			
 		}
 		//Xóa hết link con trong mảng
 		links.clear();
@@ -56,6 +71,11 @@ public class Main {
 		sentences.clear();
 		//Xóa hết từ trong mảng
 		words.clear();*/
+		
+		String content1 = tokenize.tokenize("Hôm 10-11, Tổng thống Philippines Rodrigo Duterte và Thủ tướng Malaysia Najib Razak đã cùng hát karaoke tại bữa tiệc chiêu đãi cấp nhà nước ở hội trường khu vực Seri Perdana - Malaysia.");
+		String content2 = tokenize.tokenize("Tổng thống Philippines Rodrigo Duterte đã cùng hòa giọng với Thủ tướng Malaysia Najib Razak trong một tiết mục hát karaoke tại bữa quốc yến được tổ chức hôm 10/11 ở Malaysia.");
+		
+		System.out.println(checkPlagiarism.getSim(content1, content2));
 		
 	}
 }
