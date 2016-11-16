@@ -23,6 +23,7 @@ public class Main {
 	public static void main(String[] args) {
 //		MySQLAccess mySQLAccess = new MySQLAccess();
 		CrawlTuoiTre crawlTuoiTre = new CrawlTuoiTre();
+		CrawlNewsZing crawlNewsZing = new CrawlNewsZing();
 		CheckPlagiarism checkPlagiarism = new CheckPlagiarism();
 		Tokenize tokenize = new Tokenize();
 		String[] tokenizedContent;
@@ -39,7 +40,7 @@ public class Main {
 		ArrayList<String> links = crawlTuoiTre.getLinkItemsTuoiTre();
 		ArrayList<String> sentences = new ArrayList<>();
 		ArrayList<String> words = new ArrayList<>();
-		String content;
+		ArrayList<String> content = new ArrayList<>();
 		//Duyệt qua từng link con
 		for(String link : links){
 			//Lấy nội dung của link con
@@ -52,7 +53,7 @@ public class Main {
 			
 			
 			//Tokenize cho nội dung
-			content = tokenize.tokenize(content);
+			content = tokenize.tokenize(content.get(3));
 			//Dùng đoạn văn đã tokenize tách thành từng câu
 			sentences = checkPlagiarism.seperateSentences(content);
 			//Dùng đoạn văn đã tokenize tách thành từng từ và loại bỏ stopword
@@ -72,10 +73,21 @@ public class Main {
 		//Xóa hết từ trong mảng
 		words.clear();*/
 		
-		String content1 = tokenize.tokenize("Hôm 10-11, Tổng thống Philippines Rodrigo Duterte và Thủ tướng Malaysia Najib Razak đã cùng hát karaoke tại bữa tiệc chiêu đãi cấp nhà nước ở hội trường khu vực Seri Perdana - Malaysia.");
+		/*String content1 = tokenize.tokenize("Hôm 10-11, Tổng thống Philippines Rodrigo Duterte và Thủ tướng Malaysia Najib Razak đã cùng hát karaoke tại bữa tiệc chiêu đãi cấp nhà nước ở hội trường khu vực Seri Perdana - Malaysia.");
 		String content2 = tokenize.tokenize("Tổng thống Philippines Rodrigo Duterte đã cùng hòa giọng với Thủ tướng Malaysia Najib Razak trong một tiết mục hát karaoke tại bữa quốc yến được tổ chức hôm 10/11 ở Malaysia.");
 		
-		System.out.println(checkPlagiarism.getSim(content1, content2));
+		System.out.println(checkPlagiarism.getSim(content1, content2));*/
 		
+		// Lấy các link con từ link chủ đề
+		ArrayList<String> links = crawlNewsZing.getLinksNewsZing();
+		ArrayList<String> sentences = new ArrayList<>();
+		ArrayList<String> words = new ArrayList<>();
+		ArrayList<String> content = new ArrayList<>();
+		// Duyệt qua từng link con
+		for (String link : links) {
+			// Lấy nội dung của link con
+			content = crawlNewsZing.getContentNewsZing(link);
+			System.out.println(content.get(3));
+		}
 	}
 }

@@ -10,9 +10,7 @@ import org.jsoup.select.Elements;
 public class CrawlTuoiTre {
 
 	/*
-	 * 
 	 * Danh sách các link chủ đề
-	 * 
 	 */
 	public ArrayList<String> addUrl() {
 		ArrayList<String> URLs = new ArrayList<String>();
@@ -51,11 +49,7 @@ public class CrawlTuoiTre {
 
 							for (Element div_leftside_children : div_leftside) {
 
-								/*
-								 * TODO Xu ly lay du lieu cua the co class la
-								 * "block-feature"
-								 * 
-								 */
+								//Xu ly lay du lieu cua the co class la"block-feature"
 								if (div_leftside_children.attr("class").trim().equals("block-feature")) {
 									Elements div_children = div_leftside_children.children();
 
@@ -229,10 +223,8 @@ public class CrawlTuoiTre {
 
 	public String getContentTuoitreOnline(String link) {
 		// Tạo biến lưu giữ nội dung bài báo
-		// String content = link + "\r\n";
 		String content = "";
 		try {
-			// System.out.println(link);
 			// Lay het noi dung HTML cua trang co URL = currentURL
 			Document doc = Jsoup.connect(link).data("query", "Java").userAgent("Mozilla").cookie("auth", "token")
 					.timeout(50000).get();
