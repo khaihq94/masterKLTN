@@ -1,0 +1,108 @@
+package crawlData;
+
+public class CrawlVietnamNet {
+	//Lấy link báo Vietnamnet
+public ArrayList<String> getLinkVietnamnet(){
+	//...
+	for(Element div : divs){
+		if(div.attr("class").trim().equals("Main-Container") && div.tagName().trim().equals("div")){
+			Elements mainContainers = div.children();
+			for(Element mainContainer : mainContainers){
+				if(mainContainer.attr("class").trim().equals("Main-Body w-1000") && mainContainer.tagName().trim().equals("div")){
+					Elements w1000s = mainContainer.children();
+					for(Element w1000 : w1000s){
+						//Lấy link trong class CatTop
+						if(w1000.attr("class").trim().equals("CatTop clearfix") && w1000.tagName().trim().equals("div")){
+							Elements catTops = w1000.children();
+							for(Element catTop : catTops){
+								if(catTop.attr("class").trim().equals("w-690 left") && catTop.tagName().trim().equals("div")){
+									Elements w690s = catTop.children();
+									for(Element w690 : w690s){
+										if(w690.attr("class").trim().equals("clearfix") && w690.tagName().trim().equals("div")){
+											Elements clearfixs = w690.children();
+											for(Element clearfix : clearfixs){
+												//Lấy link trong class CateTopLeft
+												if(clearfix.attr("class").trim().equals("CateTopLeft left m-t-10") && clearfix.tagName().trim().equals("div")){
+													Elements cateTopLefts = clearfix.children();
+													for(Element cateTopLeft : cateTopLefts){
+														if(cateTopLeft.attr("class").trim().equals("TopArticle") && cateTopLeft.tagName().trim().equals("div")){
+															Elements topArticles = cateTopLeft.children();
+															for(Element topArticle : topArticles){
+																if(topArticle.attr("class").trim().equals("f-20") && topArticle.tagName().trim().equals("h2")){
+																	Elements f20s = topArticle.children();
+																	for(Element f20 : f20s){
+																		if(f20.tagName().trim().equals("a")){
+																			System.out.println("http://vietnamnet.vn" + f20.attr("href"));
+																			link.add("http://vietnamnet.vn" + f20.attr("href"));
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+												//Lấy link trong class CateTopCenter
+												if(clearfix.attr("class").trim().equals("CateTopCenter left m-l-10") && clearfix.tagName().trim().equals("div")){
+													Elements cateTopCenters = clearfix.children();
+													for(Element cateTopCenter : cateTopCenters){
+														if(cateTopCenter.attr("class").trim().equals("ListHeight m-t-10") && cateTopCenter.tagName().trim().equals("ul")){
+															Elements listHeights = cateTopCenter.children();
+															for(Element listHeight : listHeights){
+																if(listHeight.attr("class").trim().equals("dotter") && listHeight.tagName().trim().equals("li")){
+																	Elements dotters = listHeight.children();
+																	for(Element dotter : dotters){
+																		if(dotter.tagName().trim().equals("a")){
+																			System.out.println("http://vietnamnet.vn" + dotter.attr("href"));
+																			link.add("http://vietnamnet.vn" + dotter.attr("href"));
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						//Lấy link trong class HomeBlock
+						if(w1000.attr("class").trim().equals("HomeBlock clearfix m-t-10") && w1000.tagName().trim().equals("div")){
+							Elements homeBlocks = w1000.children();
+							for(Element homeBlock : homeBlocks){
+								if(homeBlock.attr("class").trim().equals("HomeBlockLeft left") && homeBlock.tagName().trim().equals("div")){
+									Elements homeBlockLefts = homeBlock.children();
+									for(Element homeBlockLeft : homeBlockLefts){
+										if(homeBlockLeft.attr("class").trim().equals("m-t-10") && homeBlockLeft.tagName().trim().equals("div")){
+											Elements mt10s = homeBlockLeft.children();
+											for(Element mt10 : mt10s){
+												if(mt10.attr("class").trim().equals("ListArticle") && mt10.tagName().trim().equals("ul")){
+													Elements listArticles = mt10.children();
+													for(Element listArticle : listArticles){
+														if(listArticle.attr("class").trim().equals("item clearfix dotter") && listArticle.tagName().trim().equals("li")){
+															Elements items = listArticle.children();
+															for(Element item : items){
+																if(item.tagName().trim().equals("a")){
+																	System.out.println("http://vietnamnet.vn" + item.attr("href"));
+																	link.add("http://vietnamnet.vn" + item.attr("href"));
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+}

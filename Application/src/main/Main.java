@@ -24,6 +24,8 @@ public class Main {
 //		MySQLAccess mySQLAccess = new MySQLAccess();
 		CrawlTuoiTre crawlTuoiTre = new CrawlTuoiTre();
 		CrawlNewsZing crawlNewsZing = new CrawlNewsZing();
+		CrawlDanTri crawlDanTri = new CrawlDanTri();
+		CrawlVietnamNet crawlVietnamNet = new CrawlVietnamNet();
 		CheckPlagiarism checkPlagiarism = new CheckPlagiarism();
 		Tokenize tokenize = new Tokenize();
 		String[] tokenizedContent;
@@ -76,18 +78,17 @@ public class Main {
 		/*String content1 = tokenize.tokenize("Hôm 10-11, Tổng thống Philippines Rodrigo Duterte và Thủ tướng Malaysia Najib Razak đã cùng hát karaoke tại bữa tiệc chiêu đãi cấp nhà nước ở hội trường khu vực Seri Perdana - Malaysia.");
 		String content2 = tokenize.tokenize("Tổng thống Philippines Rodrigo Duterte đã cùng hòa giọng với Thủ tướng Malaysia Najib Razak trong một tiết mục hát karaoke tại bữa quốc yến được tổ chức hôm 10/11 ở Malaysia.");
 		
-		System.out.println(checkPlagiarism.getSim(content1, content2));*/
+		System.out.println(checkPlagiarism.getSimS(content1, content2));*/
 		
 		// Lấy các link con từ link chủ đề
-		ArrayList<String> links = crawlNewsZing.getLinksNewsZing();
+		ArrayList<String> links = crawlVietnamNet.getLinksVietnamnet();
 		ArrayList<String> sentences = new ArrayList<>();
 		ArrayList<String> words = new ArrayList<>();
 		ArrayList<String> content = new ArrayList<>();
-		// Duyệt qua từng link con
+		/*// Duyệt qua từng link con
 		for (String link : links) {
-			// Lấy nội dung của link con
-			content = crawlNewsZing.getContentNewsZing(link);
-			System.out.println(content.get(3));
-		}
+			System.out.println(link);
+			content = crawlDanTri.getContentDantri(link);
+		}*/
 	}
 }
