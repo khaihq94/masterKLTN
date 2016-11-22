@@ -314,7 +314,7 @@ public class CheckPlagiarism {
 		return maxSim;
 	}
 	
-	public double getSim(String content1, String content2){
+	public double getSimS(String content1, String content2){
 		
 		
 		ArrayList<String> words1 = seperateWords(content1);
