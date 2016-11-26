@@ -7,7 +7,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import helperMethod.HelperMethod;
+
 public class CrawlDanTri {
+	
+	HelperMethod helper = new HelperMethod();
 
 	/*
 	 * Danh sách các link chủ đề
@@ -146,6 +150,7 @@ public class CrawlDanTri {
 	 * 		Phần tử 1 là thời gian (Time) đăng tin
 	 * 		Phần tử 2 là đoạn tóm tắt (Summary) tin
 	 * 		Phần tử 3 là nội dung của cả bài báo
+	 * 		Phần tử 4 là danh sách hình ảnh trong bài báo
 	 * */
 	public ArrayList<String> getContentDantri(String link) {
 		ArrayList<String> row = new ArrayList<>();
@@ -153,6 +158,8 @@ public class CrawlDanTri {
 		ArrayList<String> tmp = new ArrayList<>();
 		// Tạo biến lưu giữ nội dung bài báo
 		String content = "";
+		//Tạo biến lưu tên của hình ảnh trong bài báo
+		String imageList = "";
 		try {
 			// Lay het noi dung HTML cua trang co URL = currentURL
 			Document doc = Jsoup.connect(link).data("query", "Java").userAgent("Mozilla").cookie("auth", "token")
@@ -181,31 +188,59 @@ public class CrawlDanTri {
 															for(Element divContent : divContents){
 																//Lấy title
 																if(divContent.attr("class").trim().equals("fon31 mgb15") && divContent.tagName().equals("h1")){
-																	System.out.println(divContent.ownText().replace("\u00a0", " ") + " \r\n");
-																	tmp.add(divContent.ownText().replace("\u00a0", " ") + " \r\n");
+																	System.out.println(divContent.text().trim().replace("\u00a0", " ") + " \r\n");
+																	tmp.add(divContent.text().trim().replace("\u00a0", " ") + " \r\n");
+																	continue;
 																}
 																//Lấy time
 																if(divContent.attr("class").trim().equals("box26 clearfix") && divContent.tagName().equals("div")){
 																	Elements box26s = divContent.children();
 																	for(Element box26 : box26s){
 																		if(box26.attr("class").trim().equals("fr fon7 mr2 tt-capitalize") && box26.tagName().equals("span")){
-																			System.out.println(box26.ownText().replace("\u00a0", " ") + " \r\n");
-																			tmp.add(box26.ownText().replace("\u00a0", " ") + " \r\n");
+																			String[] a = box26.text().trim().split("\\s+");
+																			System.out.println(a[2]);
+																			tmp.add(a[2].replace("\u00a0", " ") + " \r\n");
+																			continue;
 																		}
 																	}
 																}
 																//Lấy sub-title
 																if(divContent.attr("class").trim().equals("fon33 mt1 sapo") && divContent.tagName().equals("h2")){
-																	System.out.println(divContent.ownText().replace("\u00a0", " ") + " \r\n");
-																	tmp.add(divContent.ownText().replace("\u00a0", " ") + " \r\n");
+																	System.out.println(divContent.text().trim().replace("\u00a0", " ") + " \r\n");
+																	tmp.add(divContent.ownText().trim().replace("\u00a0", " ") + " \r\n");
+																	continue;
 																}
 																//Lấy content
 																if(divContent.attr("id").trim().equals("divNewsContent") && divContent.tagName().equals("div")){
 																	Elements divNewsContents = divContent.children();
+																	//Biến lưu số ảnh trong 1 tin tức
+																	int noImg = 0;
 																	for(Element divNewsContent : divNewsContents){
+																		//Lấy hình ảnh và phụ đề hình ảnh
+																		if(divNewsContent.attr("type").trim().equals("Photo") && divNewsContent.tagName().equals("div")){
+																			//Lấy hình ảnh
+																			Element photo = divNewsContent.child(0);
+																			Element img = photo.child(0);
+																			//Lấy tên cho file ảnh
+																			String fileName = link.replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
+																			//Lưu file ảnh vào folder dantri
+																			helper.getImage(img.attr("src").trim(), "dantri", fileName);
+																			//Thêm đoạn cho biết số ở vị trí này có ảnh
+																			content = content.trim() + "img=" + fileName  + " \r\n";
+																			//Thêm tên ảnh vào danh sách file hình
+																			imageList = imageList + fileName + " ";
+																			//Tăng biến lưu số ảnh trong 1 tin tức
+																			noImg++;
+																			System.out.println("img=" + fileName  + " \r\n");
+																			//Lấy phụ đề hình ảnh
+																			Element subPhoto = divNewsContent.child(1);
+																		}
+																		//Lấy nội dung báo
 																		if(divNewsContent.tagName().equals("p")){
-																			System.out.println(divNewsContent.text().replace("\u00a0", " ") + " \r\n");
-																			content = content + divNewsContent.text().replace("\u00a0", " ") + " \r\n";
+																			if(divNewsContent.text().trim().length() > 1){
+																				System.out.println(divNewsContent.text().trim().replace("\u00a0", " ") + " \r\n");
+																				content = content.trim() + divNewsContent.text().replace("\u00a0", " ") + " \r\n";
+																			}
 																		}
 																	}
 																}
@@ -228,13 +263,16 @@ public class CrawlDanTri {
 		if (content == "") {
 			content = "N/A";
 		}
-		//Thêm Title vào row. title đc lấy từ fần tử thứ nhất của biếng tmp
+		//Thêm Title vào row. title đc lấy từ fần tử thứ nhất của biến tmp
 		row.add(tmp.get(1).trim());
-		//Thêm Time vào row. title đc lấy từ fần tử thứ 0 của biếng tmp
+		//Thêm Time vào row. title đc lấy từ fần tử thứ 0 của biến tmp
 		row.add(tmp.get(0).trim());
-		//Thêm Sub-title vào row. title đc lấy từ fần tử thứ 2 của biếng tmp
+		//Thêm Sub-title vào row. title đc lấy từ fần tử thứ 2 của biến tmp
 		row.add(tmp.get(2).trim());
+		//Thêm content
 		row.add(content.trim());
+		//Thêm danh sách image
+		row.add(imageList.trim());
 		return row;
 	}
 }
