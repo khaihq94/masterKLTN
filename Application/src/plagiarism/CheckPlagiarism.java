@@ -10,41 +10,6 @@ public class CheckPlagiarism {
 
 	}
 
-	public ArrayList<String> nonWordList() {
-		ArrayList<String> nonWordList = new ArrayList<>();
-		nonWordList.add("+");
-		nonWordList.add("-");
-		nonWordList.add(".");
-		nonWordList.add(",");
-		nonWordList.add("!");
-		nonWordList.add("@");
-		nonWordList.add("#");
-		nonWordList.add("$");
-		nonWordList.add("\'");
-		nonWordList.add("^");
-		nonWordList.add("&");
-		nonWordList.add("*");
-		nonWordList.add("(");
-		nonWordList.add(")");
-		nonWordList.add(";");
-		nonWordList.add("\\");
-		nonWordList.add("/");
-		nonWordList.add("|");
-		nonWordList.add(">");
-		nonWordList.add("<");
-		nonWordList.add("?");
-		nonWordList.add("\"");
-		nonWordList.add(":");
-		nonWordList.add("`");
-		nonWordList.add("~");
-		nonWordList.add("\"");
-		nonWordList.add("[");
-		nonWordList.add("]");
-		nonWordList.add("{");
-		nonWordList.add("}");
-		return nonWordList;
-	}
-
 	/*public ArrayList<String> separateWords(String[] content) {
 		ArrayList<String> wordList = new ArrayList<>();
 		ArrayList<String> nonWordList = nonWordList();
@@ -481,6 +446,6 @@ public class CheckPlagiarism {
 	public double getSimSO(String content1, String content2){
 		double simS = getSimS(content1, content2);
 		double simO = getSimO(content1, content2);
-		return simS * 0.6 + simO * 0.4;
+		return simS * 0.5 + simO * 0.5;
 	}
 }

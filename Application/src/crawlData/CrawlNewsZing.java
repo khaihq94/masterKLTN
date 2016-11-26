@@ -255,6 +255,7 @@ public class CrawlNewsZing {
 												// Lấy tiêu đề
 												if(header.attr("class").trim().equals("the-article-title cms-title")){
 													row.add(header.text().replace("\u00a0", " ") + " \r\n");
+													continue;
 //													System.out.println(header.ownText());
 												}
 												//Lấy thời gian 
@@ -264,6 +265,7 @@ public class CrawlNewsZing {
 														if(meta.attr("class").trim().equals("the-article-publish cms-date")){
 //															System.out.println(meta.ownText());
 															row.add(meta.text().replace("\u00a0", " ") + " \r\n");
+															continue;
 														}
 													}
 												}
@@ -273,6 +275,7 @@ public class CrawlNewsZing {
 										if(main.attr("class").trim().equals("the-article-summary cms-desc")){
 //											System.out.println(main.text());
 											row.add(main.text().replace("\u00a0", " ") + " \r\n");
+											continue;
 										}
 										//Lấy nội dung tin
 										if(main.attr("class").trim().equals("the-article-body cms-body")){
