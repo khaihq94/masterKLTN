@@ -6,10 +6,6 @@ import java.io.*;
 
 public class CheckPlagiarism {
 
-	public void checkPlag1() {
-
-	}
-
 	/*public ArrayList<String> separateWords(String[] content) {
 		ArrayList<String> wordList = new ArrayList<>();
 		ArrayList<String> nonWordList = nonWordList();
