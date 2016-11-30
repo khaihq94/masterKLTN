@@ -416,6 +416,7 @@ public class CheckPlagiarism {
 		while (i < R1.size() && i < R2.size()) {
 			int j = 0;
 			int maxSize;
+			// Tìm ra số lần xuất hiện thấp nhất của từ trong 2 văn bản
 			if (R1.get(i).size() < R2.get(i).size()) {
 				maxSize = R1.get(i).size();
 			} else {
