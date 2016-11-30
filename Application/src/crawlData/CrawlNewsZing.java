@@ -7,7 +7,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import helperMethod.HelperMethod;
+
 public class CrawlNewsZing {
+	
+	HelperMethod helper = new HelperMethod();
 
 	/*
 	 * Danh sách các link chủ đề
@@ -226,11 +230,14 @@ public class CrawlNewsZing {
 	 * 		Phần tử 1 là thời gian (Time) đăng tin
 	 * 		Phần tử 2 là đoạn tóm tắt (Summary) tin
 	 * 		Phần tử 3 là nội dung của cả bài báo
+	 * 		Phần tử 4 là tên báo mà tin đc lấy về
 	 * */
 	public ArrayList<String> getContentNewsZing(String link) {
 		ArrayList<String> row = new ArrayList<>();
 		// Tạo biến lưu giữ nội dung bài báo
 		String content = "";
+		/*// Tạo biến lưu tên của hình ảnh trong bài báo
+		String imageList = "";*/
 		try {
 			// Lay het noi dung HTML cua trang co URL = currentURL
 			Document doc = Jsoup.connect(link).data("query", "Java").userAgent("Mozilla").cookie("auth", "token")
@@ -254,17 +261,18 @@ public class CrawlNewsZing {
 											for(Element header : headers){
 												// Lấy tiêu đề
 												if(header.attr("class").trim().equals("the-article-title cms-title")){
-													row.add(header.text().replace("\u00a0", " ") + " \r\n");
+													row.add(header.text().trim().replace("\u00a0", " "));
 													continue;
-//													System.out.println(header.ownText());
+//													System.out.println(header.text().trim().replace("\u00a0", " ") + " \r\n");
 												}
 												//Lấy thời gian 
 												if(header.attr("class").trim().equals("the-article-meta")){
 													Elements metas = header.children();
 													for(Element meta : metas){
 														if(meta.attr("class").trim().equals("the-article-publish cms-date")){
-//															System.out.println(meta.ownText());
-															row.add(meta.text().replace("\u00a0", " ") + " \r\n");
+															String[] a = meta.text().trim().split("\\s+");
+//															System.out.println(a[1].trim().replace("\u00a0", " ") + " \r\n");
+															row.add(a[1].trim().replace("\u00a0", " "));
 															continue;
 														}
 													}
@@ -273,17 +281,47 @@ public class CrawlNewsZing {
 										}
 										//Lấy đoạn tóm tắt tin tức
 										if(main.attr("class").trim().equals("the-article-summary cms-desc")){
-//											System.out.println(main.text());
-											row.add(main.text().replace("\u00a0", " ") + " \r\n");
+//											System.out.println(main.text().trim().replace("\u00a0", " ") + " \r\n");
+											row.add(main.text().trim().replace("\u00a0", " "));
 											continue;
 										}
 										//Lấy nội dung tin
 										if(main.attr("class").trim().equals("the-article-body cms-body")){
 											Elements bodys = main.children();
+											//Biến lưu số ảnh trong 1 tin tức
+											int noImg = 0;
 											for(Element body : bodys){
+												//Lấy hình ảnh và phụ đề hình ảnh
+												if(body.attr("class").trim().equals("picture") && body.tagName().trim().equals("table")){
+													//Lấy hình ảnh
+													Element tbody = body.child(0);
+													Element tr0 = tbody.child(0);
+													Element td = tr0.child(0);
+													Element img = td.child(0);
+													//Lấy tên cho file ảnh
+													String fileName = link.replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
+													//Lưu file ảnh vào folder dantri
+													helper.getImage(img.attr("src").trim(), "newszing", fileName);
+													//Thêm đoạn cho biết số ở vị trí này có ảnh
+													content = content + "img=" + fileName  + " \r\n";
+													/*//Thêm tên ảnh vào danh sách file hình
+													imageList = imageList + fileName + " ";*/
+													//Tăng biến lưu số ảnh trong 1 tin tức
+													noImg++;
+//													System.out.println("img=" + fileName  + " \r\n");
+													// Lấy phụ đề hình
+													Element tr1 = tbody.child(1);
+													Element caption = tr1.child(0);
+													content = content + "subPhoto=" + caption.text() + " \r\n";
+//													System.out.println(caption.text().trim());
+													continue;
+												}
+												//Lấy nội dung của tin tức
 												if(body.tagName().trim().equals("p")){
-//													System.out.println(body.text());
-													content = content + body.text().replace("\u00a0", " ") + " \r\n";
+													if(body.text().trim().length() > 1){
+														System.out.println(body.text());
+														content = content + body.text().trim().replace("\u00a0", " ") + " \r\n";
+													}
 												}
 											}
 										}
@@ -301,7 +339,9 @@ public class CrawlNewsZing {
 		if(content == ""){
 			content = "N/A";
 		}
+		System.out.println(content);
 		row.add(content.trim());
+		row.add("Zing News");
 		return row;
 	}
 	

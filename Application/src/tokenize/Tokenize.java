@@ -6,9 +6,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import helperMethod.HelperMethod;
 import vn.hus.nlp.tokenizer.VietTokenizer;
 
 public class Tokenize {
+	
+	HelperMethod helper = new HelperMethod();
+	
 	/*
 	 * TODO
 	 * Chạy vnTokenizer
@@ -42,21 +46,21 @@ public class Tokenize {
 		String[] tokenizedContent;
 		for(String content : contents){
 			tokenizedContent = token.tokenize(content);
-			System.out.println(arrayToString(tokenizedContent));
+			System.out.println(helper.arrayToString(tokenizedContent));
 		}
 	}
 	
 	public String tokenizeToString(String content) {
 		VietTokenizer token = new VietTokenizer();
 		String[] tokenizedContent = token.tokenize(content);
-		System.out.println(arrayToString(tokenizedContent));
-		return arrayToString(tokenizedContent);
+		System.out.println(helper.arrayToString(tokenizedContent));
+		return helper.arrayToString(tokenizedContent);
 	}
 	
 	public String[] tokenizeToArray(String content){
 		VietTokenizer token = new VietTokenizer();
 		String[] tokenizedContent = token.tokenize(content);
-		System.out.println(arrayToString(tokenizedContent));
+		System.out.println(helper.arrayToString(tokenizedContent));
 		return tokenizedContent;
 	}
 	
@@ -99,13 +103,5 @@ public class Tokenize {
 		}
 		
 		return done;
-	}
-
-	public String arrayToString(String[] array){
-		StringBuilder builder = new StringBuilder();
-		for(String s : array){
-			builder.append(s);
-		}
-		return builder.toString();
 	}
 }
