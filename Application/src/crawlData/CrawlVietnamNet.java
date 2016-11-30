@@ -7,17 +7,42 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import helperMethod.HelperMethod;
+
 public class CrawlVietnamNet {
+	
+	HelperMethod helper = new HelperMethod();
+	
 	/*
 	 * Danh sách các link chủ đề
 	 */
-	public ArrayList<String> addUrl() {
-		ArrayList<String> URLs = new ArrayList<String>();
-//		URLs.add("http://vietnamnet.vn/vn/kinh-doanh/");
-		URLs.add("http://vietnamnet.vn/vn/the-gioi/");
-//		URLs.add("http://vietnamnet.vn/vn/the-thao/");
-//		URLs.add("http://vietnamnet.vn/vn/cong-nghe/");
-//		URLs.add("http://vietnamnet.vn/vn/suc-khoe/");
+	public ArrayList<ArrayList<String>> addUrl() {
+		ArrayList<ArrayList<String>> URLs = new ArrayList<ArrayList<String>>();
+		ArrayList<String> tmp = new ArrayList<>();
+		tmp.add("http://vietnamnet.vn/vn/kinh-doanh/");
+		tmp.add("Kinh Doanh");
+		URLs.add(tmp);
+		tmp = new ArrayList<>();
+		
+		tmp.add("http://vietnamnet.vn/vn/the-gioi/");
+		tmp.add("Thế Giới");
+		URLs.add(tmp);
+		tmp = new ArrayList<>();
+		
+		tmp.add("http://vietnamnet.vn/vn/the-thao/");
+		tmp.add("Thể Thao");
+		URLs.add(tmp);
+		tmp = new ArrayList<>();
+		
+		tmp.add("http://vietnamnet.vn/vn/cong-nghe/");
+		tmp.add("Công Nghệ");
+		URLs.add(tmp);
+		tmp = new ArrayList<>();
+		
+		tmp.add("http://vietnamnet.vn/vn/suc-khoe/");
+		tmp.add("Sức Khỏe");
+		URLs.add(tmp);
+		tmp = new ArrayList<>();
 		return URLs;
 	}
 
@@ -28,13 +53,14 @@ public class CrawlVietnamNet {
 	 * Output: biến trả ra danh sách các link tin tức thuộc chủ đề
 	 * 
 	 */
-	public ArrayList<String> getLinksVietnamnet() {
-		ArrayList<String> URLs = addUrl();
-		ArrayList<String> link = new ArrayList<String>();
-		for (String url : URLs) {
+	public ArrayList<ArrayList<String>> getLinksVietnamnet() {
+		ArrayList<ArrayList<String>> URLs = addUrl();
+		ArrayList<ArrayList<String>> link = new ArrayList<ArrayList<String>>();
+		ArrayList<String> tmp = new ArrayList<>();
+		for (int i = 0; i < URLs.size(); i++) {
 			try {
 				// Lay het noi dung HTML cua trang co URL = currentURL
-				Document doc = Jsoup.connect(url).userAgent("Mozilla").cookie("auth", "token")
+				Document doc = Jsoup.connect(URLs.get(i).get(0)).userAgent("Mozilla").cookie("auth", "token")
 						.timeout(50000).get();
 
 				// Lay cac element la div trong doc
@@ -69,7 +95,10 @@ public class CrawlVietnamNet {
 																				for (Element f20 : f20s) {
 																					if (f20.tagName().trim().equals("a")) {
 //																						System.out.println("http://vietnamnet.vn" + f20.attr("href"));
-																						link.add("http://vietnamnet.vn" + f20.attr("href"));
+																						tmp.add("http://vietnamnet.vn" + f20.attr("href"));
+																						tmp.add(URLs.get(i).get(1));
+																						link.add(tmp);
+																						tmp = new ArrayList<>();
 																					}
 																				}
 																			}
@@ -89,7 +118,10 @@ public class CrawlVietnamNet {
 																				for (Element dotter : dotters) {
 																					if (dotter.tagName().trim().equals("a")) {
 //																						System.out.println("http://vietnamnet.vn" + dotter.attr("href"));
-																						link.add("http://vietnamnet.vn" + dotter.attr("href"));
+																						tmp.add("http://vietnamnet.vn" + dotter.attr("href"));
+																						tmp.add(URLs.get(i).get(1));
+																						link.add(tmp);
+																						tmp = new ArrayList<>();
 																					}
 																				}
 																			}
@@ -121,8 +153,29 @@ public class CrawlVietnamNet {
 																		for (Element item : items) {
 																			if (item.tagName().trim().equals("a")) {
 //																				System.out.println("http://vietnamnet.vn" + item.attr("href"));
-																				link.add("http://vietnamnet.vn" + item.attr("href"));
+																				tmp.add("http://vietnamnet.vn" + item.attr("href"));
+																				tmp.add(URLs.get(i).get(1));
+																				link.add(tmp);
+																				tmp = new ArrayList<>();
 																			}
+																		}
+																	}
+																}
+															}
+														}
+													} else {
+														if (homeBlockLeft.attr("class").trim().equals("ListArticle") && homeBlockLeft.tagName().trim().equals("ul")) {
+															Elements listArticles = homeBlockLeft.children();
+															for (Element listArticle : listArticles) {
+																if (listArticle.attr("class").trim().equals("item clearfix dotter") && listArticle.tagName().trim().equals("li")) {
+																	Elements items = listArticle.children();
+																	for (Element item : items) {
+																		if (item.tagName().trim().equals("a")) {
+//																			System.out.println("http://vietnamnet.vn" + item.attr("href"));
+																			tmp.add("http://vietnamnet.vn" + item.attr("href"));
+																			tmp.add(URLs.get(i).get(1));
+																			link.add(tmp);
+																			tmp = new ArrayList<>();
 																		}
 																	}
 																}
@@ -146,7 +199,7 @@ public class CrawlVietnamNet {
 		for (int i = 0; i < link.size(); i++) {
 			int j = i + 1;
 			while (j < link.size()) {
-				if (link.get(i).equals(link.get(j))) {
+				if (link.get(i).get(0).equals(link.get(j).get(0))) {
 					link.remove(j);
 				}
 				j++;
@@ -165,7 +218,7 @@ public class CrawlVietnamNet {
 	 * 		Phần tử 3 là nội dung của cả bài báo
 	 * 		Phần tử 4 là tên báo mà tin đc lấy về
 	 * */
-	public ArrayList<String> getContentVietnamNet(String link) {
+	public ArrayList<String> getContentVietnamNet(ArrayList<String> link) {
 		ArrayList<String> row = new ArrayList<>();
 		// Tạo biến lưu giữ nội dung bài báo
 		String content = "";
@@ -173,7 +226,7 @@ public class CrawlVietnamNet {
 		String imageList = "";*/
 		try {
 			// Lay het noi dung HTML cua trang co URL = currentURL
-			Document doc = Jsoup.connect(link).userAgent("Mozilla").cookie("auth", "token").timeout(50000).get();
+			Document doc = Jsoup.connect(link.get(0)).userAgent("Mozilla").cookie("auth", "token").timeout(50000).get();
 
 			// Lay cac element la div trong doc
 			Elements elements = doc.getElementsByTag("div");
@@ -181,7 +234,7 @@ public class CrawlVietnamNet {
 				if(div.attr("class").trim().equals("Main-Container") && div.tagName().trim().equals("div")){
 					Elements mainContainers = div.children();
 					for(Element mainContainer : mainContainers){
-						if(mainContainer.attr("class").trim().equals("Main-Body DetailPage w-1000") && mainContainer.tagName().trim().equals("div")){
+						if(mainContainer.attr("class").trim().contains("Main-Body") && mainContainer.tagName().trim().equals("div")){
 							Elements w1000s = mainContainer.children();
 							for(Element w1000 : w1000s){
 								if(w1000.attr("class").trim().equals("HomeBlock clearfix") && w1000.tagName().trim().equals("div")){
@@ -212,6 +265,8 @@ public class CrawlVietnamNet {
 																// Lấy subTitle; photo; subPhoto và content
 																if(articleDetail.attr("class").trim().equals("ArticleContent") && articleDetail.tagName().trim().equals("div")){
 																	Elements articleContents = articleDetail.children();
+																	//Biến lưu số ảnh trong 1 tin tức
+																	int noImg = 0;
 																	for(int i = 0; i < articleContents.size(); i++){
 																		Element articleContent = articleContents.get(i);
 																		// Lấy sub-title
@@ -222,7 +277,51 @@ public class CrawlVietnamNet {
 																		}
 																		// Lấy photo và subPhoto
 																		if(articleContent.attr("class").trim().contains("image") && articleContent.tagName().trim().equals("table")){
-																			continue;
+																			Element tbody = articleContent.child(0);
+																			Elements trs = tbody.children();
+																			// Trường hợp chỉ có photo mà ko có subPhoto 
+																			if(trs.size() == 1) {
+																				// Lấy photo
+																				Element trPhoto = trs.get(0);
+																				Element tdPhoto = trPhoto.child(0);
+																				Element aPhoto = tdPhoto.child(0);
+																				//Lấy tên cho file ảnh
+																				String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
+																				//Lưu file ảnh vào folder dantri
+//																				helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																				//Thêm đoạn cho biết số ở vị trí này có ảnh
+																				content = content + "img=" + fileName  + " \r\n";
+																				//Thêm tên ảnh vào danh sách file hình
+//																				imageList = imageList + fileName + " ";
+																				//Tăng biến lưu số ảnh trong 1 tin tức
+																				noImg++;
+//																				System.out.println("img=" + fileName  + " \r\n");
+																				continue;
+																			}
+																			// Trường hợp có cả photo và subPhoto
+																			else if(trs.size() == 2) {
+																				// Lấy photo
+																				Element trPhoto = trs.get(0);
+																				Element tdPhoto = trPhoto.child(0);
+																				Element aPhoto = tdPhoto.child(0);
+																				//Lấy tên cho file ảnh
+																				String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
+																				//Lưu file ảnh vào folder dantri
+//																				helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																				//Thêm đoạn cho biết số ở vị trí này có ảnh
+																				content = content + "img=" + fileName  + " \r\n";
+																				//Thêm tên ảnh vào danh sách file hình
+//																				imageList = imageList + fileName + " ";
+																				//Tăng biến lưu số ảnh trong 1 tin tức
+																				noImg++;
+//																				System.out.println("img=" + fileName  + " \r\n");
+																				
+																				// Lấy subPhoto
+																				Element trSubPhoto = trs.get(1);
+																				Element tdSubPhoto = trSubPhoto.child(0);
+																				content = content + "subPhoto=" + tdSubPhoto.text() + " \r\n";
+																				continue;
+																			}
 																		}
 																		// Lấy content
 																		if(articleContent.tagName().trim().equals("p") && i != 0){
@@ -241,21 +340,129 @@ public class CrawlVietnamNet {
 										}
 									}
 								}
+								if(w1000.attr("class").trim().equals("CatTop clearfix") && w1000.tagName().trim().equals("div")){
+									Elements catTops = w1000.children();
+									for(Element catTop : catTops){
+										if(catTop.attr("class").trim().equals("w-690 left") && catTop.tagName().trim().equals("div")){
+											Elements w690s = catTop.children();
+											for(Element w690 : w690s){
+												if(w690.attr("class").trim().equals("clearfix") && w690.tagName().trim().equals("div")){
+													Elements clearfixs = w690.children();
+													for(Element clearfix : clearfixs){
+														if(clearfix.attr("class").trim().contains("w-500") && clearfix.tagName().trim().equals("div")){
+															Elements w500s = clearfix.children();
+															for(Element w500 : w500s){
+																if(w500.attr("class").trim().equals("ArticleDetail") && w500.tagName().trim().equals("div")){
+																	Elements articleDetails = w500.children();
+																	for(Element articleDetail : articleDetails){
+																		// Lấy title
+																		if(articleDetail.attr("class").trim().equals("title") && articleDetail.tagName().trim().equals("h1")){
+																			row.add(articleDetail.text().trim().replace("\u00a0", " "));
+																			System.out.println(articleDetail.text().trim().replace("\u00a0", " ") + " \r\n");
+																			continue;
+																		}
+																		// Lấy time
+																		if(articleDetail.attr("class").trim().equals("ArticleDateTime") && articleDetail.tagName().trim().equals("div")){
+																			String[] a = articleDetail.text().replace("\u00a0", " ").trim().split("\\s+");
+																			System.out.println(a[0].trim().replace("\u00a0", " ") + " \r\n");
+																			row.add(a[0].trim().replace("\u00a0", " "));
+																			continue;
+																		}
+																		// Lấy subTitle; photo; subPhoto và content
+																		if(articleDetail.attr("class").trim().equals("ArticleContent") && articleDetail.tagName().trim().equals("div")){
+																			Elements articleContents = articleDetail.children();
+																			//Biến lưu số ảnh trong 1 tin tức
+																			int noImg = 0;
+																			for(int i = 0; i < articleContents.size(); i++){
+																				Element articleContent = articleContents.get(i);
+																				// Lấy sub-title
+																				if(articleContent.tagName().trim().equals("p") && i == 0){
+																					System.out.println(articleContent.text().trim().replace("\u00a0", " ") + " \r\n");
+																					row.add(articleContent.text().trim().replace("\u00a0", " "));
+																					continue;
+																				}
+																				// Lấy photo và subPhoto
+																				if(articleContent.attr("class").trim().contains("image") && articleContent.tagName().trim().equals("table")){
+																					Element tbody = articleContent.child(0);
+																					Elements trs = tbody.children();
+																					// Trường hợp chỉ có photo mà ko có subPhoto 
+																					if(trs.size() == 1) {
+																						// Lấy photo
+																						Element trPhoto = trs.get(0);
+																						Element tdPhoto = trPhoto.child(0);
+																						Element aPhoto = tdPhoto.child(0);
+																						//Lấy tên cho file ảnh
+																						String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
+																						//Lưu file ảnh vào folder dantri
+//																						helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																						//Thêm đoạn cho biết số ở vị trí này có ảnh
+																						content = content + "img=" + fileName  + " \r\n";
+																						//Thêm tên ảnh vào danh sách file hình
+//																						imageList = imageList + fileName + " ";
+																						//Tăng biến lưu số ảnh trong 1 tin tức
+																						noImg++;
+//																						System.out.println("img=" + fileName  + " \r\n");
+																						continue;
+																					}
+																					// Trường hợp có cả photo và subPhoto
+																					else if(trs.size() == 2) {
+																						// Lấy photo
+																						Element trPhoto = trs.get(0);
+																						Element tdPhoto = trPhoto.child(0);
+																						Element aPhoto = tdPhoto.child(0);
+																						//Lấy tên cho file ảnh
+																						String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
+																						//Lưu file ảnh vào folder dantri
+//																						helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																						//Thêm đoạn cho biết số ở vị trí này có ảnh
+																						content = content + "img=" + fileName  + " \r\n";
+																						//Thêm tên ảnh vào danh sách file hình
+//																						imageList = imageList + fileName + " ";
+																						//Tăng biến lưu số ảnh trong 1 tin tức
+																						noImg++;
+//																						System.out.println("img=" + fileName  + " \r\n");
+																						
+																						// Lấy subPhoto
+																						Element trSubPhoto = trs.get(1);
+																						Element tdSubPhoto = trSubPhoto.child(0);
+																						content = content + "subPhoto=" + tdSubPhoto.text() + " \r\n";
+																						continue;
+																					}
+																				}
+																				// Lấy content
+																				if(articleContent.tagName().trim().equals("p") && i != 0){
+																					if(articleContent.text().trim().length() > 1){
+//																						System.out.println(articleContent.text().trim().replace("\u00a0", " ") + " \r\n");
+																						content = content + articleContent.text().replace("\u00a0", " ") + " \r\n";
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
-		if(content == ""){
+		/*if(content == ""){
 			content = "N/A";
-		}
+		}*/
 		System.out.println(content);
 		row.add(content.trim());
 		row.add("VietnamNet");
+		row.add(link.get(1));
 		return row;
 	}
 }
