@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 4, 2016 1:05:33 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="Tblnews" table="tblnews" catalog="finaldatabase" optimistic-lock="version">
+        <id name="newsId" type="java.lang.Integer">
+            <column name="NewsId" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tblsubject" class="Tblsubject" fetch="select">
+            <column name="SubjectID" length="25" />
+        </many-to-one>
+        <property name="link" type="string">
+            <column name="Link" />
+        </property>
+        <property name="postTime" type="date">
+            <column name="PostTime" length="10" />
+        </property>
+        <property name="title" type="string">
+            <column name="Title" length="65535" />
+        </property>
+        <property name="subTitle" type="string">
+            <column name="SubTitle" length="65535" />
+        </property>
+        <property name="content" type="string">
+            <column name="Content" length="65535" />
+        </property>
+        <property name="newsName" type="string">
+            <column name="NewsName" length="24" />
+        </property>
+        <set name="tblcomments" table="tblcomment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="NewsId" />
+            </key>
+            <one-to-many class="Tblcomment" />
+        </set>
+    </class>
+</hibernate-mapping>

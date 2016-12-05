@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 4, 2016 1:05:33 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="Tblsubject" table="tblsubject" catalog="finaldatabase" optimistic-lock="version">
+        <id name="subjectId" type="string">
+            <column name="SubjectID" length="25" />
+            <generator class="assigned" />
+        </id>
+        <property name="subjectName" type="string">
+            <column name="SubjectName" length="50" />
+        </property>
+        <set name="tblnewses" table="tblnews" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="SubjectID" length="25" />
+            </key>
+            <one-to-many class="Tblnews" />
+        </set>
+    </class>
+</hibernate-mapping>

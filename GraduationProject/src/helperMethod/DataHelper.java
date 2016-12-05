@@ -1,0 +1,76 @@
+package helperMethod;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import model.Tblnews;
+import model.Tblsubject;
+import util.HibernateUtil;
+
+public class DataHelper  {
+	Session session = null;
+	List<Tblnews> newsList;
+	DataHelper helper;
+	public DataHelper() {
+		// TODO Auto-generated constructor stub
+		//this.session= HibernateUtil.getSessionFactory().getCurrentSession();
+		this.session= HibernateUtil.getSessionFactory().openSession();
+	}
+	//Ham lay danh sach news 
+	@SuppressWarnings("unchecked")
+	public List<Tblnews> getNewsList(){
+		newsList = new ArrayList<Tblnews>();
+		try {
+			org.hibernate.Transaction tx = session.beginTransaction();
+			Query q = session.createQuery("From Tblnews as tblnews ");
+			newsList =(List<Tblnews>)q.list();
+		} catch (Exception e) {
+			// TODO: handle exception
+			newsList = null;
+			e.printStackTrace();
+		}
+		return newsList;
+	}
+	//Ham lay danh sach theo NewsID
+	public Tblnews getNewsbytID (int NewsId){
+		Tblnews news = null;
+		try {
+			org.hibernate.Transaction tx = session.beginTransaction();
+			 Query q = session.createQuery("from Tblnews as news where Tblnews.newsId=" + NewsId);
+	            news = (Tblnews) q.uniqueResult();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return news;
+	}
+	
+	//Hàm insert vào tblNews
+	public void insertTblNews(String link, String title, Date postTime, String subTitle, String content, String newsName, String subjectId){
+		SessionFactory sessionfactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionfactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Tblsubject sj = new Tblsubject();
+		sj.setSubjectId(subjectId);
+//		sj.setSubjectName("Thế Giới");
+		Tblnews tt = new Tblnews();
+		tt.setLink(link);
+		tt.setPostTime(postTime);
+		tt.setTitle(title);
+		tt.setSubTitle(subTitle);
+		tt.setContent(content);
+		tt.setNewsName(newsName);
+		tt.setTblsubject(sj);
+		session.save(tt);
+		tx.commit();
+		session.close();
+	}
+
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 4, 2016 1:05:33 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="Tblcomment" table="tblcomment" catalog="finaldatabase" optimistic-lock="version">
+        <id name="commentId" type="int">
+            <column name="CommentID" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="tblaccount" class="Tblaccount" fetch="select">
+            <column name="UserID" />
+        </many-to-one>
+        <many-to-one name="tblnews" class="Tblnews" fetch="select">
+            <column name="NewsId" />
+        </many-to-one>
+        <property name="commentContent" type="string">
+            <column name="CommentContent" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>
