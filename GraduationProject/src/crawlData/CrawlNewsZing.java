@@ -1,5 +1,6 @@
 package crawlData;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -276,8 +277,7 @@ public class CrawlNewsZing {
 		String imageList = "";*/
 		try {
 			// Lay het noi dung HTML cua trang co URL = currentURL
-			Document doc = Jsoup.connect(link.get(0)).data("query", "Java").userAgent("Mozilla").cookie("auth", "token")
-					.timeout(50000).get();
+			Document doc = Jsoup.parse(new URL(link.get(0)).openStream(), "UTF-8", link.get(0));
 
 			// Lay cac element la div trong doc
 			Elements elements = doc.getElementsByTag("div");

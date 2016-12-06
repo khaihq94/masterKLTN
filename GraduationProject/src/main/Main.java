@@ -18,8 +18,8 @@ import tokenize.Tokenize;
 
 public class Main {
 	public static void main(String[] args) {
-		CrawlData crawlData = new CrawlData();
-		crawlData.crawlData();
+		/*CrawlData crawlData = new CrawlData();
+		crawlData.crawlData();*/
 		
 		/*Tokenize tokenize = new Tokenize();
 		CheckPlagiarism checkPlagiarism = new CheckPlagiarism();
@@ -28,8 +28,9 @@ public class Main {
 		System.out.println(checkPlagiarism.getSimSO(content1, content2));*/
 		
 		/*DataHelper dataHelper = new DataHelper();
-		List<Tblnews> list = dataHelper.getNewsList();
-		for(Tblnews item : list){
+		List<Tblnews> list = dataHelper.getNewsByLink("http://dantri.com.vn/the-gioi/ong-trump-muon-huy-hop-dong-dong-chuyen-co-khong-luc-mot-moi-20161206220444648.htm");
+		for(int i = 0; i < list.size(); i++){
+			Tblnews item = list.get(i);
 			System.out.print(item.getNewsId() + "\t");
 			System.out.print(item.getLink() + "\t");
 			System.out.print(item.getPostTime() + "\t");

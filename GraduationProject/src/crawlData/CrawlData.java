@@ -2,8 +2,10 @@ package crawlData;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import helperMethod.*;
+import model.Tblnews;
 import plagiarism.CheckPlagiarism;
 
 
@@ -25,39 +27,56 @@ public class CrawlData {
 	}
 	
 	public void getDanTri(){
-		//Lấy các tin tức từ db với mốc ngày hiện tại trừ 3
 		
 		//Lấy các link con từ link chủ đề
 		ArrayList<ArrayList<String>> links = crawlDanTri.getLinksDanTri();
 		ArrayList<String> content1 = new ArrayList<>();
+		List<Tblnews> lists = null;
 		//Duyệt qua từng link con
 		for(int i = 0; i < links.size(); i++){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//Lấy nội dung của link con
 			content1 = crawlDanTri.getContentDantri(links.get(i));
 			//Kiểm tra nội dung lấy đc, nếu nội dung chính = "" thì bỏ qua các bước tiếp theo
 			if(content1.get(4) == ""){
 				continue;
 			}
-			dataHelper.insertTblNews(content1.get(0), content1.get(1), helper.stringToDate(content1.get(2)), 
-					content1.get(3), content1.get(4), content1.get(5), content1.get(6));
-			//So sánh link của tin vừa lấy với các tin có trong db đã đc lấy ở trên
 			
-			/*//Nếu trùng remove content khỏi mảng, bỏ qua các bước dưới
-			if(){
+			// So sánh link của tin vừa lấy với các tin có trong db
+			// Lấy danh sách tin tức trong db theo link
+			List<Tblnews> listLinks = dataHelper.getNewsByLink(content1.get(0).trim());
+			//Nếu danh sách có size >= 1, nghĩa là trong db đã có link đó => continue
+			if(listLinks.size() >= 1){
 				continue;
 			}
-			//Nếu không trùng thì thực hiện các bước kiểm tra về nội dung với các tin trong db đã lấy ở trên
-			//Lấy độ tương đồng giữa 2 văn bản
-			double simSO = checkPlagiarism.getSimSO(content1, content2);
-			//Nếu độ tương đồng giữa 2 văn bản nhỏ hơn 0.7 thì lưu tin mới vào db
-			if(simSO <= 0.7) {
-				
+			
+			//Lấy các tin tức từ db với mốc ngày hiện tại trừ 3
+			lists = dataHelper.getNewsListFromLast3Days();
+			
+			// Nếu không trùng thì thực hiện các bước kiểm tra về nội dung với các tin trong db đã lấy ở trên
+			for(int x = 0; x < lists.size(); x++){
+				Tblnews list = lists.get(x);
+				// Lấy độ tương đồng giữa 2 văn bản
+				double simSO = checkPlagiarism.getSimSO(content1.get(4), list.getContent());
+				// Nếu lớn hơn 0.7, xóa tin tức và ko lưu vào db
+				if(simSO >= 0.7) {
+					lists.clear();
+					break;
+				}
+				// Nếu độ tương đồng giữa 2 văn bản nhỏ hơn 0.7 thì lưu tin mới vào db
+				else if(x == lists.size() - 1) {
+					dataHelper.insertTblNews(content1.get(0), content1.get(1), helper.stringToDate(content1.get(2)), 
+							content1.get(3), content1.get(4), content1.get(5), content1.get(6));
+					lists.clear();
+				}
 			}
-			//Nếu lớn hơn 0.7, xóa tin tức và ko lưu vào db
-			else {
-				
-			}*/
 		}
+		
 		//Xóa hết link con trong mảng
 		links.clear();
 	}

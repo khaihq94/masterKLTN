@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.io.ByteArrayOutputStream"/>
-<fullyQualifiedTypeName name="java.io.ByteArrayInputStream"/>
-<fullyQualifiedTypeName name="java.nio.charset.StandardCharsets"/>
 <fullyQualifiedTypeName name="com.google.gson.GsonBuilder"/>
 <fullyQualifiedTypeName name="copyleaks.sdk.api.CopyleaksCloud"/>
 <fullyQualifiedTypeName name="com.google.gson.Gson"/>
@@ -21,7 +18,6 @@
 <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
 <fullyQualifiedTypeName name="java.io.UnsupportedEncodingException"/>
 <fullyQualifiedTypeName name="org.jsoup.Jsoup"/>
-<fullyQualifiedTypeName name="java.net.URL"/>
 <fullyQualifiedTypeName name="crawlData.CrawlTuoiTre"/>
 <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
 <fullyQualifiedTypeName name="crawlData.CrawlDanTri"/>
@@ -53,11 +49,15 @@
 <fullyQualifiedTypeName name="org.w3c.dom.stylesheets.LinkStyle"/>
 <fullyQualifiedTypeName name="model.Tblcomment"/>
 <fullyQualifiedTypeName name="org.hibernate.procedure.internal.Util"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="model.Tblnews"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="helperMethod.DataHelper"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.text.DateFormat"/>
 <fullyQualifiedTypeName name="helperMethod.HelperMethod"/>
+<fullyQualifiedTypeName name="java.net.URLEncoder"/>
+<fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="util.HibernateUtil"/>
+<fullyQualifiedTypeName name="model.Tblnews"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
 </qualifiedTypeNameHistroy>

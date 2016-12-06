@@ -213,8 +213,8 @@ public class CheckPlagiarism {
 	 * output: độ tương tự đc tính dựa trên Độ tương tự ngữ nghĩa và Độ tương tự thứ tự từ
 	 * */
 	public double getSimSO(String content1, String content2){
-		double simS = getSimS(content1, content2);
-		double simO = getSimO(content1, content2);
+		double simS = getSimS(helper.formatContent(content1), helper.formatContent(content2));
+		double simO = getSimO(helper.formatContent(content1), helper.formatContent(content2));
 		return simS * 0.5 + simO * 0.5;
 	}
 }
