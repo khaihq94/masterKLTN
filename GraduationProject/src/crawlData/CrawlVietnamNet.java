@@ -230,8 +230,9 @@ public class CrawlVietnamNet {
 		row.add(link.get(0));
 		try {
 			// Lay het noi dung HTML cua trang co URL = currentURL
-			Document doc = Jsoup.parse(new URL(link.get(0)).openStream(), "UTF-8", link.get(0));
-
+//			Document doc = Jsoup.parse(new URL(link.get(0)).openStream(), "UTF-8", link.get(0));
+			Document doc = Jsoup.connect(link.get(0)).userAgent("Mozilla").cookie("auth", "token")
+					.timeout(50000).get();
 			// Lay cac element la div trong doc
 			Elements elements = doc.getElementsByTag("div");
 			for (Element div : elements) {
@@ -292,7 +293,7 @@ public class CrawlVietnamNet {
 																				//Lấy tên cho file ảnh
 																				String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
 																				//Lưu file ảnh vào folder dantri
-//																				helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																				helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
 																				//Thêm đoạn cho biết số ở vị trí này có ảnh
 																				content = content + "img=" + fileName  + " \r\n";
 																				//Thêm tên ảnh vào danh sách file hình
@@ -311,7 +312,7 @@ public class CrawlVietnamNet {
 																				//Lấy tên cho file ảnh
 																				String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
 																				//Lưu file ảnh vào folder dantri
-//																				helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																				helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
 																				//Thêm đoạn cho biết số ở vị trí này có ảnh
 																				content = content + "img=" + fileName  + " \r\n";
 																				//Thêm tên ảnh vào danh sách file hình
@@ -398,7 +399,7 @@ public class CrawlVietnamNet {
 																						//Lấy tên cho file ảnh
 																						String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
 																						//Lưu file ảnh vào folder dantri
-//																						helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																						helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
 																						//Thêm đoạn cho biết số ở vị trí này có ảnh
 																						content = content + "img=" + fileName  + " \r\n";
 																						//Thêm tên ảnh vào danh sách file hình
@@ -417,7 +418,7 @@ public class CrawlVietnamNet {
 																						//Lấy tên cho file ảnh
 																						String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
 																						//Lưu file ảnh vào folder dantri
-//																						helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
+																						helper.getImage(aPhoto.attr("src").trim(), "vietnamnet", fileName);
 																						//Thêm đoạn cho biết số ở vị trí này có ảnh
 																						content = content + "img=" + fileName  + " \r\n";
 																						//Thêm tên ảnh vào danh sách file hình

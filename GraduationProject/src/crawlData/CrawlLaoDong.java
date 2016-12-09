@@ -200,8 +200,9 @@ public class CrawlLaoDong {
 		String imageList = "";*/
 		try {
 			// Lay het noi dung HTML cua trang co URL = currentURL
-			Document doc = Jsoup.parse(new URL(link.get(0)).openStream(), "UTF-8", link.get(0));
-
+//			Document doc = Jsoup.parse(new URL(link.get(0)).openStream(), "UTF-8", link.get(0));
+			Document doc = Jsoup.connect(link.get(0)).userAgent("Mozilla").cookie("auth", "token")
+					.timeout(50000).get();
 			// Lay cac element la div trong doc
 			Elements elements = doc.getElementsByTag("div");
 			for (Element div : elements) {
