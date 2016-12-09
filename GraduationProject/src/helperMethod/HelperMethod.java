@@ -132,6 +132,10 @@ public class HelperMethod {
 	
 	public ArrayList<String> seperateSentences(String text){
 		ArrayList<String> sentences = new ArrayList<>();
+		text = text.replace("./.", ".");
+		// Loại bỏ các dấu đặc biệt trừ ?, ! và .
+		text = text.replaceAll("[-^=+\\\\|\\[{\\]};:'\",<>/#()]*", "").replaceAll("\u2026", "").trim();
+				
 		//biến k duyệt qua từng ký tự trong văn bản
 		int k = 0;
 		//biến position: lưu lại vị trí ký tự cuối cùng của câu trước đó
@@ -161,6 +165,7 @@ public class HelperMethod {
 						continue;
 					}
 				}
+				
 				//Kiểm tra xem dấu . có phải là ngăn cách giữa các số, VD: 25.000
 				if(k + 1 < text.length()){
 					String beforeCharAtK = text.charAt(k - 1) + "";
@@ -193,14 +198,14 @@ public class HelperMethod {
 	 * 
 	 * */
 	public ArrayList<String> seperateWords(String text){
-		text = text.toLowerCase();
+		text = text.toLowerCase().trim();
 		//Khai báo mảng words để chứa các từ trong văn bản
 		ArrayList<String> words = new ArrayList<>();
 		//Khai báo mảng stopWordsList để đọc file chứa các từ dừng
 		ArrayList<String> stopWords = readStopWordsFile("vietnamese-stopwords.txt");
 		
 		// Loại bỏ các dấu đặc biệt
-		String content = text.replaceAll("[-^=+\\\\|\\[{\\]};:'\".,<>/#()]*", "").replaceAll("\u2026", "");
+		String content = text.replaceAll("[-^=+\\\\|\\[{\\]};:'\".,<>/#!?()]*", "").replaceAll("\u2026", "").trim();
 		
 		// biến k duyệt qua từng ký tự trong văn bản
 		int k = 0;

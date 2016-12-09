@@ -21,7 +21,7 @@ public class CrawlDanTri {
 	public ArrayList<ArrayList<String>> addUrl() {
 		ArrayList<ArrayList<String>> URLs = new ArrayList<ArrayList<String>>();
 		ArrayList<String> tmp = new ArrayList<>();
-		tmp.add("http://dantri.com.vn/the-gioi.htm");
+		/*tmp.add("http://dantri.com.vn/the-gioi.htm");
 		tmp.add("thegioi");
 		URLs.add(tmp);
 		tmp = new ArrayList<>();
@@ -34,7 +34,7 @@ public class CrawlDanTri {
 		tmp.add("http://dantri.com.vn/kinh-doanh.htm");
 		tmp.add("kinhdoanh");
 		URLs.add(tmp);
-		tmp = new ArrayList<>();
+		tmp = new ArrayList<>();*/
 		
 		tmp.add("http://dantri.com.vn/the-thao.htm");
 		tmp.add("thethao");
@@ -127,23 +127,6 @@ public class CrawlDanTri {
 																				tmp.add(URLs.get(i).get(1));
 																				link.add(tmp);
 																				tmp = new ArrayList<>();
-																			}
-																			//Lấy link trong thẻ mr1
-																			if(mt3.attr("class").trim().equals("mr1") && mt3.tagName().trim().equals("div")){
-																				Elements mr1s = mt3.children();
-																				for(Element mr1 : mr1s){
-																					if(mr1.attr("class").trim().equals("fon5 wid324 fl") && mr1.tagName().trim().equals("div")){
-																						Elements wid324s = mr1.children();
-																						for(Element wid324 : wid324s){
-																							if(wid324.tagName().trim().equals("a")){
-																								tmp.add("http://dantri.com.vn" + wid324.attr("href"));
-																								tmp.add(URLs.get(i).get(1));
-																								link.add(tmp);
-																								tmp = new ArrayList<>();
-																							}
-																						}
-																					}
-																				}
 																			}
 																		}
 																	}
@@ -262,7 +245,7 @@ public class CrawlDanTri {
 																			//Lấy tên cho file ảnh
 																			String fileName = link.get(0).replace(":", ".").replace("/", ".") + "_" + noImg + ".jpg";
 																			//Lưu file ảnh vào folder dantri
-//																			helper.getImage(img.attr("src").trim(), "dantri", fileName);
+																			helper.getImage(img.attr("src").trim(), "dantri", fileName);
 																			//Thêm đoạn cho biết số ở vị trí này có ảnh
 																			content = content + "img=" + fileName  + " \r\n";
 																			/*//Thêm tên ảnh vào danh sách file hình

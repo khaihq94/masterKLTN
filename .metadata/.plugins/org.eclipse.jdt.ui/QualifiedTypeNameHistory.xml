@@ -49,7 +49,6 @@
 <fullyQualifiedTypeName name="org.w3c.dom.stylesheets.LinkStyle"/>
 <fullyQualifiedTypeName name="model.Tblcomment"/>
 <fullyQualifiedTypeName name="org.hibernate.procedure.internal.Util"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="helperMethod.DataHelper"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.text.DateFormat"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="util.HibernateUtil"/>
 <fullyQualifiedTypeName name="model.Tblnews"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>

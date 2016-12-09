@@ -43,15 +43,34 @@ public class DataHelper {
 		}
 		return newsList;
 	}
+	
+	// Ham lay danh sach tin tức theo chủ đề
+		@SuppressWarnings("unchecked")
+		public List<Tblnews> getNewsListBySubjectId(String subjectID) {
+			newsList = new ArrayList<Tblnews>();
+			Transaction tx = null;
+			try {
+				tx = session.beginTransaction();
+				Query q = session.createQuery("From Tblnews WHERE `SubjectID` = '" + subjectID + "'");
+				newsList = (List<Tblnews>) q.list();
+				tx.commit();
+			} catch (Exception e) {
+				// TODO: handle exception
+				newsList = null;
+				tx.rollback();
+				e.printStackTrace();
+			}
+			return newsList;
+		}
 
 	// Ham lay danh sach tin tức từ trước ngày hiện tại 3 ngày đến nay
 	@SuppressWarnings("unchecked")
-	public List<Tblnews> getNewsListFromLast3Days() {
+	public List<Tblnews> getNewsListFromLast3DaysBySubjectId(String subjectId) {
 		newsList = new ArrayList<Tblnews>();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			Query q = session.createQuery("From Tblnews WHERE PostTime >= curdate() - 3 AND PostTime <= curdate()");
+			Query q = session.createQuery("From Tblnews WHERE SubjectID = '" + subjectId +"' AND PostTime >= curdate() - 3 AND PostTime <= curdate()");
 			newsList = (List<Tblnews>) q.list();
 			tx.commit();
 		} catch (Exception e) {
