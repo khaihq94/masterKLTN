@@ -1,0 +1,48 @@
+package helperMethod;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+import model.Tblnews;
+import util.HibernateUtil;
+
+public class DataHelper  {
+	Session session = null;
+	List<Tblnews> newsList;
+	NewsHelper helper;
+	public DataHelper() {
+		// TODO Auto-generated constructor stub
+		this.session= HibernateUtil.getSessionFactory().getCurrentSession();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Tblnews> getNewsList(){
+		newsList = new ArrayList<Tblnews>();
+		try {
+			org.hibernate.Transaction tx = session.beginTransaction();
+			Query q = session.createQuery("From Tblnews as tblnews ");
+			newsList =(List<Tblnews>)q.list();
+		} catch (Exception e) {
+			// TODO: handle exception
+			newsList = null;
+			e.printStackTrace();
+		}
+		return newsList;
+	}
+	public Tblnews getNewsbytID (int NewsId){
+		Tblnews news = null;
+		try {
+			org.hibernate.Transaction tx = session.beginTransaction();
+			 Query q = session.createQuery("from Tblnews as news where Tblnews.newsId=" + NewsId);
+	            news = (Tblnews) q.uniqueResult();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return news;
+	}
+
+}
